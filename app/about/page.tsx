@@ -1,4 +1,6 @@
 // app/main/index.tsx
+"use client"
+import { useState } from "react"
 import React from 'react';
 import FileUpload from '@/components/FileUpload'; // Adjust the import path based on your actual structure
 
