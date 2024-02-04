@@ -1,6 +1,6 @@
 // app/main/index.tsx
 import React from 'react';
-import FileUpload from '../components/FileUpload'; // Adjust the import path based on your actual structure
+import FileUpload from '@/components/FileUpload'; // Adjust the import path based on your actual structure
 
 const MainPage = () => {
   return (
