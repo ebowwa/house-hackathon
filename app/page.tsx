@@ -10,7 +10,7 @@ export default function HomePage() {
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleFileChange = (econst handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (econst, = (e: React.ChangeEvent<HTMLInputElement>) => {
   setFile(e.target.files[0]);
 };
 ) => {
