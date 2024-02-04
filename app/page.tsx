@@ -47,13 +47,29 @@ export default function HomePage() {
     <main className="flex min-h-screen items-center justify-center p-24">
       <section className="flex w-full max-w-md flex-col items-center space-y-4">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Upload File</h2>
+        
+        {/* File input */}
         <div className="grid w-full items-center gap-1.5">
           <label htmlFor="file" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">File</label>
           <input className="form-input" id="file" type="file" />
         </div>
-        <button className={`btn-primary ${uploading ? 'bg-gray-500' : ''}`} type="button" onClick={handleUpload} disabled={uploading}>
+
+        {/* URL input */}
+        <div className="grid w-full items-center gap-1.5">
+          <label htmlFor="url" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">URL</label>
+          <input className="form-input" id="url" placeholder="Enter URL" type="text" />
+        </div>
+
+        {/* Submit button */}
+        <button 
+          className={`btn-primary ${uploading ? 'bg-gray-500' : ''}`} 
+          type="button" 
+          onClick={handleUpload} 
+          disabled={uploading}>
           {uploading ? 'Uploading...' : 'Upload'}
         </button>
+
+        {/* Upload result */}
         {uploadResult && <div className="mt-4 text-center text-sm">{uploadResult}</div>}
       </section>
     </main>
