@@ -1,23 +1,21 @@
-// app/page.tsx
-"use client"; // Ensures this page is treated as a client-side only component
+// Importing necessary types from 'react'
+import React from 'react';
 
 export default function HomePage() {
   // Function to handle file selection
-  const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Get the file
-    uploadFile(file); // Call the upload function
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0]; // Get the first file
+      uploadFile(file); // Call the upload function
+    }
   };
 
-  // Function to handle the upload action
-  const uploadFile = (file) => {
-    console.log("Uploading file:", file.name);
-
-    // Create a FormData object and append the file
+  // Example function to handle the upload action
+  const uploadFile = (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    // Use fetch API to send the file to the server
-    fetch('https://house-hackathon.vercel.app/upload', { // Ensure the URL matches your Flask server's address and endpoint
+    fetch('https://house-hackathon.vercel.app/', { // Ensure the URL matches your Flask endpoint
       method: 'POST',
       body: formData,
     })
@@ -29,6 +27,14 @@ export default function HomePage() {
       console.error('Error:', error);
     });
   };
+
+  return (
+    <div>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={() => uploadFile}>Upload File</button>
+    </div>
+  );
+}
 
   return (
     // The main tag here uses flexbox to center its children both vertically and horizontally
