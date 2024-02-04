@@ -1,37 +1,25 @@
-// app/components/FileUpload.tsx
-import React, { useState } from 'react';
+// src/components/VideoUploader.tsx
 
-const FileUpload = () => {
+import React, { useState } from 'react';
+import { uploadVideoFile } from '@/api/videoProcessor';
+
+const VideoUploader: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
+    if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleUpload = async () => {
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-
       try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to upload file.');
-        }
-
-        const result = await response.json();
-        console.log(result);
-        // Handle success
+        const response = await uploadVideoFile(file);
+        console.log('Upload successful', response);
+        // Handle further actions with response here
       } catch (error) {
-        console.error('Error uploading file:', error);
-        // Handle error
+        console.error('Upload failed', error);
       }
     }
   };
