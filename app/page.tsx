@@ -2,10 +2,32 @@
 "use client"; // Ensures this page is treated as a client-side only component
 
 export default function HomePage() {
-  // Example function to handle the upload action
-  const handleUpload = () => {
-    console.log("Upload action triggered");
-    // Implement the upload logic here
+  // Function to handle file selection
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; // Get the file
+    uploadFile(file); // Call the upload function
+  };
+
+  // Function to handle the upload action
+  const uploadFile = (file) => {
+    console.log("Uploading file:", file.name);
+
+    // Create a FormData object and append the file
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Use fetch API to send the file to the server
+    fetch('https://house-hackathon.vercel.app/upload', { // Ensure the URL matches your Flask server's address and endpoint
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   };
 
   return (
