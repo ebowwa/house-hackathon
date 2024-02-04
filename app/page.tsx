@@ -1,30 +1,32 @@
-// Assuming this is within a file like app/components/UploadComponent.tsx
+// app/page.tsx
+"use client"; // Mark the component for client-side rendering
 
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+// Since you're using a custom SVG component, ensure it's correctly referenced
+// This line is commented out because it might be incorrect based on your setup
+import { UploadCloud } from 'lucide-react';
 
-export default function UploadComponent() {
+export default function HomePage() {
+  // Function to handle the upload action
+  const handleUpload = () => {
+    console.log("Upload action triggered");
+    // Here you would implement the actual upload logic
+  };
+
   return (
-    <div className="flex flex-col w-full max-w-md items-center space-y-4">
-      <div className="flex w-full items-center space-x-2">
-        <Label htmlFor="url">URL</Label>
-        <Input className="flex-grow" id="url" placeholder="Enter URL" type="text" />
-      </div>
-      <Button className="flex items-center space-x-2" type="submit">
-        <UploadCloudIcon className="h-5 w-5" />
-        <span>Upload</span>
-      </Button>
-    </div>
-  );
-}
+    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+      {/* Centered content including the upload button within a section */}
+      <section className="text-center">
+        <Button className="flex items-center justify-center space-x-2 mx-auto" type="button" onClick={handleUpload}>
+          {/* Assuming you have a correct way to include the UploadCloud icon, which might be a custom SVG */}
+          {/* Ensure the SVG icon is used here correctly, possibly as <UploadCloudIcon className="h-5 w-5" /> */}
+          <span>Upload</span>
+        </Button>
+      </section>
 
-function UploadCloudIcon(props) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-      <path d="M12 12v9" />
-      <path d="m16 16-4-4-4 4" />
-    </svg>
+      {/* Additional content, ensure it's also centered as necessary */}
+    </main>
   );
 }
