@@ -1,21 +1,37 @@
-// frontend/src/pages/Home.tsx
-import React, { useState } from 'react';
-import axios from 'axios';
+// Importing necessary types from 'react'
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { CloudUpload } from 'lucide-react';
 
-const Home: React.FC = () => {
-  const [message, setMessage] = useState<string>('');
-
-  const handleUpload = () => {
-    axios.post('/upload')
-      .then(response => {
-        setMessage(response.data.message);
-      })
-      .catch(error => {
-        console.error('Error uploading file:', error);
-        setMessage('Error uploading file');
-      });
+export default function HomePage() {
+  // Function to handle file selection
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0]; // Get the first file
+      uploadFile(file); // Call the upload function
+    }
   };
+
+  // Example function to handle the upload action
+  const uploadFile = (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('http://localhost:5000/upload', { // Ensure the URL matches your Flask endpoint
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  };
+
   return (
     // The main tag here uses flexbox to center its children both vertically and horizontally
     <main className="flex min-h-screen items-center justify-center p-24">
