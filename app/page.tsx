@@ -1,45 +1,64 @@
-import axios from 'axios'; // Ensure axios is imported
-import { useState } from 'react';
-
+// app/page.tsx
 "use client"; // Ensures this page is treated as a client-side only component
+// app/page.tsx
+import React, { useState } from 'react';
 
 export default function HomePage() {
-  const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [file, setFile] = useState(null); // State to hold the selected file
 
-  // Corrected the type of event parameter here
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
+  // Function to handle file selection
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]); // Update state with the selected file
   };
 
+  // Asynchronous function to handle the upload action
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select a file first.");
+      alert("Please select a file before uploading.");
       return;
     }
+    console.log("Uploading file", file.name);
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', file); // 'file' is the key expected by the Flask backend
 
     try {
-      setUploading(true);
-      const response = await axios.post('https://house-hackathon-git-main-ebowwa.vercel.app/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await fetch('/upload', { // Ensure this URL matches your Flask route
+        method: 'POST',
+        body: formData,
       });
-      if (response.data) {
-        setUploadSuccess(true);
-        console.log(response.data); // Handle response data as needed
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Upload successful: ${data.message}`);
+        // Here you could clear the selected file or handle further actions
+      } else {
+        const error = await response.json();
+        alert(`Upload failed: ${error.error}`);
       }
     } catch (error) {
-      console.error(error);
-      setErrorMessage('Upload failed');
-    } finally {
-      setUploading(false);
+      console.error("Error uploading file:", error);
+      alert("Upload failed due to a network or server error.");
     }
   };
+
+  return (
+    <main className="flex min-h-screen items-center justify-center p-24">
+      <section className="flex w-full max-w-md flex-col items-center space-y-4">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Upload File</h2>
+        <div className="grid w-full items-center gap-1.5">
+          <label htmlFor="file" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">File</label>
+          <input
+            className="form-input"
+            id="file"
+            type="file"
+            onChange={handleFileChange} // Handle file selection
+          />
+        </div>
+        <button className="btn-primary" type="button" onClick={handleUpload}>
+          Upload
+        </button>
+      </section>
+    </main>
+  );
+}
