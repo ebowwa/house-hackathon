@@ -1,4 +1,4 @@
-from VideoSpeechProcessor_refactored import VideoSpeechProcessor
+from _backend.VideoSpeechProcessor_refactored import VideoSpeechProcessor
 import os
 from flask import Flask, request, send_from_directory, jsonify
 from werkzeug.utils import secure_filename
