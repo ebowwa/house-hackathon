@@ -2,33 +2,43 @@
 "use client"; // Ensures this page is treated as a client-side only component
 
 export default function HomePage() {
-  // Function to handle the file upload
+  // Example function to handle the upload action
   const handleUpload = async () => {
     console.log("Upload action triggered");
-    
+
+    // Get the selected file from the file input element
+    const fileInput = document.getElementById("file") as HTMLInputElement;
+    const file = fileInput.files[0];
+
+    // Check if a file is selected
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+
     // Create a FormData object to send the file
     const formData = new FormData();
-    const fileInput = document.getElementById("file") as HTMLInputElement;
-    formData.append("file", fileInput.files[0]);
-    
+    formData.append("file", file);
+
     try {
-      // Use fetch() to send the file to your Flask server
+      // Make a POST request to the server for file upload
       const response = await fetch("https://house-hackathon-git-main-ebowwa.vercel.app/upload", {
         method: "POST",
         body: formData,
       });
-      
+
+      // Check if the request was successful
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        // Handle the response data here
+        console.log("Upload successful");
+        console.log("Output video path:", data.output_video_path);
       } else {
-        console.error("File upload failed");
-        // Handle the error here
+        console.error("Upload failed");
+        const errorData = await response.json();
+        console.error("Error:", errorData.error);
       }
     } catch (error) {
-      console.error("An error occurred while uploading the file", error);
-      // Handle the error here
+      console.error("Error:", error);
     }
   };
 
