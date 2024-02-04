@@ -27,15 +27,7 @@ export default function HomePage() {
       console.error('Error:', error);
     });
   };
-
-  return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={() => uploadFile}>Upload File</button>
-    </div>
-  );
-}
-
+  
   return (
     // The main tag here uses flexbox to center its children both vertically and horizontally
     <main className="flex min-h-screen items-center justify-center p-24">
