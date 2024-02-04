@@ -7,6 +7,5 @@ moviepy
 Pillow
 google-generativeai
 instaloader
-psycopg2
 flask-cors
 psycopg2-binary
