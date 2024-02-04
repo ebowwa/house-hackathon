@@ -1,49 +1,47 @@
 // app/page.tsx
 "use client"; // Ensures this page is treated as a client-side only component
 // app/page.tsx
-import React, { useState } from 'react';
-import axios from 'axios'; // Ensure axios is imported
+import { useState } from 'react';
+import axios from 'axios';
 
-// Define the component with TypeScript
-const HomePage: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null); // Use File type for the state
-  const [uploading, setUploading] = useState<boolean>(false);
-  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+export default function HomePage() {
+  const [file, setFile] = useState(null);
+  const [url, setUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [response, setResponse] = useState(null);
 
-  // Correctly type the event parameter
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]); // Update state with the selected file
-    }
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value);
   };
 
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select a file first.");
+      alert('Please select a file to upload');
       return;
     }
-
+    // Construct FormData
     const formData = new FormData();
     formData.append('file', file);
 
+    setUploading(true);
+
     try {
-      setUploading(true);
-      const response = await axios.post('https://house-hackathon-git-main-ebowwa.vercel.app/upload', formData, {
+      const result = await axios.post('https://house-hackathon-git-main-ebowwa.vercel.app/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setUploading(false);
-      if (response.data && response.status === 200) {
-        setUploadSuccess(true);
-        console.log('Upload success', response.data);
-      } else {
-        setErrorMessage('Upload failed');
-      }
+      setResponse(result.data);
+      alert('Upload successful');
     } catch (error) {
+      alert('Upload failed: ' + error.message);
+      console.error('Upload error:', error);
+    } finally {
       setUploading(false);
-      setErrorMessage(error.response?.data?.error || 'An unexpected error occurred');
     }
   };
 
@@ -51,15 +49,22 @@ const HomePage: React.FC = () => {
     <main className="flex min-h-screen items-center justify-center p-24">
       <section className="flex w-full max-w-md flex-col items-center space-y-4">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Upload File</h2>
-        <input className="form-input" type="file" onChange={handleFileChange} />
+        <div className="grid w-full items-center gap-1.5">
+          <label htmlFor="file" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">File</label>
+          <input className="form-input" id="file" type="file" onChange={handleFileChange} />
+        </div>
+        <div className="grid w-full items-center gap-1.5">
+          <label htmlFor="url" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">URL (Optional)</label>
+          <input className="form-input" id="url" placeholder="Enter URL" type="text" value={url} onChange={handleUrlChange} />
+        </div>
         <button className="btn-primary" type="button" onClick={handleUpload} disabled={uploading}>
           {uploading ? 'Uploading...' : 'Upload'}
         </button>
-        {uploadSuccess && <p>Upload successful!</p>}
-        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+        {response && <div className="mt-4 text-center">
+          <p>Upload Response:</p>
+          <pre>{JSON.stringify(response, null, 2)}</pre>
+        </div>}
       </section>
     </main>
   );
-};
-
-export default HomePage;
+}
