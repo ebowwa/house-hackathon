@@ -1,4 +1,6 @@
 // app/page.tsx
+"use client"; // Mark the component for client-side rendering
+
 import axios from 'axios';
 import { useState } from 'react';
 
