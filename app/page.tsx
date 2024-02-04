@@ -41,7 +41,7 @@ export default function HomePage() {
       }
     } catch (error) {
       console.error('Error uploading file:', error);
-      setErrorMessage(error.response?.data?.error || 'An error occurred. Please try again.');
+      setErrorMessage((error as AxiosError).response?.data?.error || 'An error occurred. Please try again.');
     } finally {
       setUploading(false);
     }
