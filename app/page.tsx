@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { CloudUpload } from 'lucide-react';
+import { UploadCloud } from 'lucide-react';
 
 export function Home() {
   // Example function to handle the upload action
