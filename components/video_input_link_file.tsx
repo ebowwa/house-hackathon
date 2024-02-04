@@ -22,7 +22,7 @@ export function video_input_link_file() {
 }
 
 
-function UploadCloudIcon(props) {
+function UploadCloudIcon(props: any) {
   return (
     <svg
       {...props}
