@@ -1,13 +1,6 @@
-<p align="center">
-  <a href="https://nextjs-flask-starter.vercel.app/">
-    <img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96">
-    <h3 align="center">Next.js Flask Starter</h3>
-  </a>
-</p>
 
-<p align="center">Simple Next.js boilerplate that uses <a href="https://flask.palletsprojects.com/">Flask</a> as the API backend.</p>
+![elijah_arbee](https://github.com/ebowwa/house-hackathon/assets/81942069/cc89b659-5ead-4269-af5d-ae1597562005)
 
-<br/>
 
 ## Introduction
 
