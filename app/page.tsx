@@ -1,17 +1,19 @@
-// app/page.tsx
-"use client"; // Mark the component for client-side rendering
+"use client"; // This line marks the component for client-side rendering
 
-import axios from 'axios';
 import { useState } from 'react';
+
+// Ensure to import necessary types for handling events
+import React from 'react';
 
 export default function HomePage() {
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
+  // Correctly type the event parameter using React.ChangeEvent<HTMLInputElement>
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
+    if (e.target.files) {
       setFile(e.target.files[0]);
     }
   };
@@ -25,27 +27,22 @@ export default function HomePage() {
     const formData = new FormData();
     formData.append('file', file);
 
+    setUploading(true);
     try {
-      setUploading(true);
-      const response = await axios.post('https://your-flask-server.com/upload', formData, {
+      // Use axios to send the file to your server endpoint
+      const response = await axios.post('https://house-hackathon-git-main-ebowwa.vercel.app/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      if (response.data && response.status === 200) {
-        setUploadSuccess(true);
-        console.log('Upload success:', response.data);
-      } else {
-        setErrorMessage('Upload failed. Please try again.');
-      }
+      // Handle success
+      console.log(response.data);
+      setUploadSuccess(true);
     } catch (error) {
-      console.error('Error uploading file:', error);
-      if (error.response && error.response.data) {
-        setErrorMessage(error.response.data.error || 'An error occurred. Please try again.');
-      } else {
-        setErrorMessage('An error occurred. Please try again.');
-      }
+      // Handle error
+      console.error(error);
+      setErrorMessage('Upload failed. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -55,12 +52,13 @@ export default function HomePage() {
     <main className="flex min-h-screen items-center justify-center p-24">
       <section className="flex w-full max-w-md flex-col items-center space-y-4">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Upload File</h2>
-        <input className="form-input" type="file" onChange={handleFileChange} disabled={uploading} />
-        <button className="btn-primary" type="button" onClick={handleUpload} disabled={uploading}>
-          {uploading ? 'Uploading...' : 'Upload'}
-        </button>
-        {uploadSuccess && <p className="text-green-500">File uploaded successfully!</p>}
+        <input className="form-input" id="file" type="file" onChange={handleFileChange} />
+        {uploading && <p>Uploading...</p>}
+        {uploadSuccess && <p>Upload successful!</p>}
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+        <button className="btn-primary" type="button" onClick={handleUpload} disabled={uploading}>
+          Upload
+        </button>
       </section>
     </main>
   );
