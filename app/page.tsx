@@ -5,15 +5,12 @@ import axios from 'axios';
 import { useState } from 'react';
 
 export default function HomePage() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleFileChange = (econst, = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setFile(e.target.files[0]);
-};
-) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFile(e.target.files[0]);
   };
 
