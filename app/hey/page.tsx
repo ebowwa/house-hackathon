@@ -3,17 +3,18 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import 'tailwindcss/tailwind.css';
 
 const InitialComponent = () => (
-  <div>
-    <h1>This is the initial component</h1>
+  <div className="p-4 bg-gray-200 rounded-lg">
+    <h1 className="text-xl font-bold">This is the initial component</h1>
     {/* Other content */}
   </div>
 );
 
 const NewComponent = () => (
-  <div>
-    <h1>This is the new component loaded after button click</h1>
+  <div className="p-4 bg-blue-200 rounded-lg">
+    <h1 className="text-xl font-bold">This is the new component</h1>
     {/* Other content */}
   </div>
 );
@@ -26,11 +27,17 @@ const ExamplePage = () => {
   };
 
   return (
-    <div>
-      {showNewComponent ? <NewComponent /> : <InitialComponent />}
-      {!showNewComponent && (
-        <Button onClick={handleClick}>Load New Component</Button>
-      )}
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="w-full max-w-md">
+        {showNewComponent ? <NewComponent /> : <InitialComponent />}
+        {!showNewComponent && (
+          <Button 
+            className="mt-4" 
+            onClick={handleClick}>
+            Load New Component
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
