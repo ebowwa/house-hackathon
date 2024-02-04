@@ -1,32 +1,34 @@
 // app/page.tsx
-"use client"; // Mark the component for client-side rendering
-
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-// Since you're using a custom SVG component, ensure it's correctly referenced
-// This line is commented out because it might be incorrect based on your setup
-import { UploadCloud } from 'lucide-react';
+"use client"; // Ensures this page is treated as a client-side only component
 
 export default function HomePage() {
-  // Function to handle the upload action
+  // Example function to handle the upload action
   const handleUpload = () => {
     console.log("Upload action triggered");
-    // Here you would implement the actual upload logic
+    // Implement the upload logic here
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      {/* Centered content including the upload button within a section */}
-      <section className="text-center">
-        <Button className="flex items-center justify-center space-x-2 mx-auto" type="button" onClick={handleUpload}>
-          {/* Assuming you have a correct way to include the UploadCloud icon, which might be a custom SVG */}
-          {/* Ensure the SVG icon is used here correctly, possibly as <UploadCloudIcon className="h-5 w-5" /> */}
-          <span>Upload</span>
-        </Button>
+    // The main tag here uses flexbox to center its children both vertically and horizontally
+    <main className="flex min-h-screen items-center justify-center p-24">
+      {/* The section now contains the HTML content you provided, wrapped in a container div to control width and centering */}
+      <section className="flex w-full max-w-md flex-col items-center space-y-4">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Upload File</h2>
+        {/* File input */}
+        <div className="grid w-full items-center gap-1.5">
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="file">File</label>
+          <input className="form-input" id="file" type="file" />
+        </div>
+        {/* URL input */}
+        <div className="grid w-full items-center gap-1.5">
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="url">URL</label>
+          <input className="form-input" id="url" placeholder="Enter URL" type="text" />
+        </div>
+        {/* Submit button */}
+        <button className="btn-primary" type="button" onClick={handleUpload}>
+          Upload
+        </button>
       </section>
-
-      {/* Additional content, ensure it's also centered as necessary */}
     </main>
   );
 }
