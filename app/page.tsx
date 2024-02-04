@@ -1,58 +1,54 @@
-// Importing necessary types from 'react'
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { CloudUpload } from 'lucide-react';
+// app/page.tsx
+import axios from 'axios'; // Ensure axios is installed and imported
+import { useState } from 'react'; // Import useState for managing state
 
 export default function HomePage() {
-  // Function to handle file selection
+  const [file, setFile] = useState<File | null>(null); // State to hold the selected file
+  const [uploading, setUploading] = useState(false); // State to indicate if the file is being uploaded
+
+  // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0]; // Get the first file
-      uploadFile(file); // Call the upload function
+    const files = event.target.files;
+    if (files && files[0]) {
+      setFile(files[0]);
     }
   };
 
-  // Example function to handle the upload action
-  const uploadFile = (file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
+  // Handle file upload
+  const handleUpload = async () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
 
-    fetch('http://localhost:5000/upload', { // Ensure the URL matches your Flask endpoint
-      method: 'POST',
-      body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+      try {
+        setUploading(true);
+        const response = await axios.post('https://house-hackathon-git-main-ebowwa.vercel.app/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('Upload Successful', response.data);
+        alert('File uploaded successfully');
+      } catch (error: any) {
+        console.error('Upload Error', error.response?.data || error.message);
+        alert('Upload failed');
+      } finally {
+        setUploading(false);
+      }
+    } else {
+      alert('Please select a file first');
+    }
   };
 
   return (
-    // The main tag here uses flexbox to center its children both vertically and horizontally
     <main className="flex min-h-screen items-center justify-center p-24">
-      {/* The section below is the centered content within the flex container (main) */}
       <section className="flex w-full max-w-md flex-col items-center space-y-4">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Upload File</h2>
-        {/* File input */}
-        <div className="grid w-full items-center gap-1.5">
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="file">File</label>
-          <input className="form-input" id="file" type="file" />
-        </div>
-        {/* URL input */}
-        <div className="grid w-full items-center gap-1.5">
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="url">URL</label>
-          <input className="form-input" id="url" placeholder="Enter URL" type="text" />
-        </div>
-        {/* Submit button */}
-        <button className="btn-primary" type="button" onClick={handleUpload}>
-          Upload
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Upload Video</h2>
+        <input className="form-input" type="file" onChange={handleFileChange} accept="video/mp4,video/x-m4v,video/*" />
+        <button className="btn-primary" type="button" onClick={handleUpload} disabled={uploading}>
+          {uploading ? 'Uploading...' : 'Upload'}
         </button>
       </section>
     </main>
-    );
-    }
+  );
+}
