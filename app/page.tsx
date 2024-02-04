@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { UploadCloud } from 'lucide-react';
 
-export function Home() {
+export function HomePage() {
   // Example function to handle the upload action
   const handleUpload = () => {
     console.log("Upload action triggered");
