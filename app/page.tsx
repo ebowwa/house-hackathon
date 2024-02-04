@@ -27,7 +27,7 @@ export default function HomePage() {
 
     try {
       setUploading(true);
-      const response = await axios.post('https://house-hackathon-git-main-ebowwa.vercel.app/upload', formData, {
+      const response = await axios.post('https://your-flask-server.com/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -41,7 +41,11 @@ export default function HomePage() {
       }
     } catch (error) {
       console.error('Error uploading file:', error);
-      setErrorMessage((error as AxiosError).response?.data?.error || 'An error occurred. Please try again.');
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data.error || 'An error occurred. Please try again.');
+      } else {
+        setErrorMessage('An error occurred. Please try again.');
+      }
     } finally {
       setUploading(false);
     }
