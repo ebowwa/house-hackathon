@@ -1,9 +1,12 @@
+// app/page.tsx
+"use client"; // Add this line to mark the component for client-side rendering
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { UploadCloud } from 'lucide-react'; // Ensure this icon exists or use an alternative
+import { UploadCloud } from 'lucide-react'; // Make sure the icon name is correct
 
-export default function HomePage() { // Changed to default export
+export default function HomePage() { // Use `export default` for the page component
   // Example function to handle the upload action
   const handleUpload = () => {
     console.log("Upload action triggered");
@@ -17,7 +20,7 @@ export default function HomePage() { // Changed to default export
       {/* Adding the upload button within a section */}
       <section className="text-center mb-8">
         <Button className="flex items-center space-x-2" type="button" onClick={handleUpload}>
-          <UploadCloud className="h-5 w-5" /> {/* Ensure correct icon name or replace */}
+          <UploadCloud className="h-5 w-5" /> {/* Ensure this icon exists in lucide-react */}
           <span>Upload</span>
         </Button>
       </section>
