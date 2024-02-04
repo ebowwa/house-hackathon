@@ -6,39 +6,33 @@ export default function HomePage() {
   const handleUpload = async () => {
     console.log("Upload action triggered");
 
-    // Get the selected file from the file input element
-    const fileInput = document.getElementById("file") as HTMLInputElement;
-    const file = fileInput.files[0];
+    // Select the file input element
+    const fileInput = document.getElementById("file");
 
     // Check if a file is selected
-    if (!file) {
-      console.error("No file selected");
-      return;
-    }
+    if (fileInput.files.length > 0) {
+      // Create a FormData object to send the file
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
 
-    // Create a FormData object to send the file
-    const formData = new FormData();
-    formData.append("file", file);
+      try {
+        // Make a POST request to your Flask server using the native fetch() API
+        const response = await fetch("https://house-hackathon-git-main-ebowwa.vercel.app/upload", {
+          method: "POST",
+          body: formData,
+        });
 
-    try {
-      // Make a POST request to the server for file upload
-      const response = await fetch("https://house-hackathon-git-main-ebowwa.vercel.app/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      // Check if the request was successful
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Upload successful");
-        console.log("Output video path:", data.output_video_path);
-      } else {
-        console.error("Upload failed");
-        const errorData = await response.json();
-        console.error("Error:", errorData.error);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("File uploaded successfully:", data);
+        } else {
+          console.error("File upload failed:", response.statusText);
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
+    } else {
+      console.error("No file selected.");
     }
   };
 
