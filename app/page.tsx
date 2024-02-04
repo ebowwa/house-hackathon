@@ -15,7 +15,7 @@ export default function HomePage() {
     const formData = new FormData();
     formData.append('file', file);
 
-    fetch('https://house-hackathon.vercel.app/', { // Ensure the URL matches your Flask endpoint
+    fetch('https://house-hackathon.vercel.app/upload', { // Ensure the URL matches your Flask endpoint
       method: 'POST',
       body: formData,
     })
