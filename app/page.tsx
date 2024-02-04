@@ -11,7 +11,9 @@ export default function HomePage() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(e.target.files[0]);
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
   };
 
   const handleUpload = async () => {
