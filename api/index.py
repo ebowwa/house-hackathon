@@ -2,10 +2,12 @@ from _backend.VideoSpeechProcessor_refactored import VideoSpeechProcessor
 import os
 from flask import Flask, request, send_from_directory, jsonify
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 
-# Assuming the VideoSpeechProcessor is correctly imported and set up
-
+# Right after initializing your Flask app
 app = Flask(__name__)
+CORS(app)
+# Assuming the VideoSpeechProcessor is correctly imported and set up
 
 # Use directories within the current project folder or a user's home directory
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script runs
