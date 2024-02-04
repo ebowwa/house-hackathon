@@ -1,44 +1,38 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/wgJbrzAwCMb
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+// app/example/page.tsx
+"use client";
 
-export default function Component() {
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+
+const InitialComponent = () => (
+  <div>
+    <h1>This is the initial component</h1>
+    {/* Other content */}
+  </div>
+);
+
+const NewComponent = () => (
+  <div>
+    <h1>This is the new component loaded after button click</h1>
+    {/* Other content */}
+  </div>
+);
+
+const ExamplePage = () => {
+  const [showNewComponent, setShowNewComponent] = useState(false);
+
+  const handleClick = () => {
+    setShowNewComponent(true);
+  };
+
   return (
-    <div className="flex flex-col w-full max-w-md items-center space-y-4">
-      <div className="flex w-full items-center space-x-2">
-        <Label htmlFor="url">URL</Label>
-        <Input className="flex-grow" id="url" placeholder="Enter URL" type="text" />
-      </div>
-      <Button className="flex items-center space-x-2" type="submit">
-        <UploadCloudIcon className="h-5 w-5" />
-        <span>Upload</span>
-      </Button>
+    <div>
+      {showNewComponent ? <NewComponent /> : <InitialComponent />}
+      {!showNewComponent && (
+        <Button onClick={handleClick}>Load New Component</Button>
+      )}
     </div>
-  )
-}
+  );
+};
 
-function UploadCloudIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-      <path d="M12 12v9" />
-      <path d="m16 16-4-4-4 4" />
-    </svg>
-  )
-}
+export default ExamplePage;

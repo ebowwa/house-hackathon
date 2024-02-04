@@ -1,6 +1,7 @@
 run = "tsx index.ts"
 entrypoint = "index.ts"
 hidden = [".config", "package-lock.json", "tsconfig.json"]
+modules = ["python-3.10:v18-20230807-322e88b"]
 
 [packager]
 language = "nodejs"
@@ -30,3 +31,6 @@ requiredFiles = [".replit", "replit.nix", ".config"]
 run = ["tsx", "index.ts"]
 deploymentTarget = "cloudrun"
 ignorePorts = false
+
+[unitTest]
+language = "python3"
