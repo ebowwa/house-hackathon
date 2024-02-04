@@ -1,44 +1,49 @@
 // app/page.tsx
 "use client"; // Ensures this page is treated as a client-side only component
-// app/page.tsx
 import React, { useState } from 'react';
+import axios from 'axios'; // Ensure axios is imported
 
-export default function HomePage() {
-  const [file, setFile] = useState(null); // State to hold the selected file
+const HomePage: React.FC = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
-  // Function to handle file selection
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]); // Update state with the selected file
+  // Correctly type the event parameter as React.ChangeEvent<HTMLInputElement>
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]); // Update state with the selected file
+    }
   };
 
-  // Asynchronous function to handle the upload action
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select a file before uploading.");
+      alert("Please select a file first.");
       return;
     }
-    console.log("Uploading file", file.name);
 
     const formData = new FormData();
-    formData.append('file', file); // 'file' is the key expected by the Flask backend
+    formData.append('file', file);
 
+    setUploading(true);
     try {
-      const response = await fetch('/upload', { // Ensure this URL matches your Flask route
-        method: 'POST',
-        body: formData,
+      const response = await axios.post('https://house-hackathon-git-main-ebowwa.vercel.app/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        alert(`Upload successful: ${data.message}`);
-        // Here you could clear the selected file or handle further actions
+      if (response.status === 200) {
+        setUploadSuccess(true);
+        console.log('Upload success', response.data);
       } else {
-        const error = await response.json();
-        alert(`Upload failed: ${error.error}`);
+        setErrorMessage('Upload failed');
       }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("Upload failed due to a network or server error.");
+    } catch (error: any) {
+      console.error('Upload error:', error.response ? error.response.data : error.message);
+      setErrorMessage(error.response ? error.response.data.error : error.message);
+    } finally {
+      setUploading(false);
     }
   };
 
