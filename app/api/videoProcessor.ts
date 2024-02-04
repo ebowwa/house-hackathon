@@ -1,6 +1,6 @@
 // src/api/videoProcessor.ts
 
-import { Backend } from "../lib/backend";
+import Backend from '../../lib/backend';
 
 // Assuming the existence of a function to initialize FormData for upload
 const prepareUploadData = (file: File): FormData => {
